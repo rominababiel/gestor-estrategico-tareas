@@ -30,6 +30,13 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - La plantilla de Vite trae oxlint; elegí reemplazarlo por ESLint por ser el estándar más difundido en el ecosistema React.
 - Verifiqué que `.env` quedara en `.gitignore` antes del primer commit.
 
+### Hito 2: Configuración de Firebase
+
+- Creé el proyecto en Firebase siguiendo los pasos que le pedí: edición Estándar de Firestore (la única que admite `onSnapshot`) en modo producción, para que la base arranque cerrada.
+- Separé la inicialización en tres módulos: `app.ts` (lee y valida las variables de entorno), `auth.ts` y `firestore.ts`, para distinguir dónde se inicializa cada servicio.
+- Tipé las variables `VITE_` en `vite-env.d.ts` para que TypeScript detecte nombres mal escritos.
+- Verifiqué la conexión contra las APIs de Firebase: Authentication rechazó credenciales inexistentes y Firestore respondió `PERMISSION_DENIED`, lo que confirma que la base existe y está protegida.
+
 ## Patrones de uso que me resultaron efectivos
 
 - Pedir primero el análisis y el plan, y validar antes de generar código.
