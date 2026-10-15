@@ -4,6 +4,10 @@ SPA de gestión de tareas con autenticación, persistencia por usuario en Cloud 
 
 > Documentación en construcción. Se completa a medida que avanzan los hitos del proyecto.
 
+## Producción
+
+https://gestor-estrategico-tareas-tan.vercel.app
+
 ## Stack
 
 - React + TypeScript (Vite)
