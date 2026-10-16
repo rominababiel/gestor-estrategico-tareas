@@ -1,6 +1,26 @@
 .page {
   display: flex;
   flex-direction: column;
+  gap: var(--space-6);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
 }
 
@@ -8,6 +28,9 @@
   font-size: var(--font-size-xl);
 }
 
-.muted {
-  color: var(--color-text-muted);
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-8);
+  color: var(--color-primary);
 }
