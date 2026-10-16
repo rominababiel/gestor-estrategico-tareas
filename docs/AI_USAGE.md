@@ -53,6 +53,13 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Al mover las redirecciones a las rutas, las páginas de login y registro y el logout dejaron de navegar por su cuenta: solo cambian el estado de la sesión y las rutas reaccionan a ese cambio.
 - Al probar, detecté que una cuenta creada con Google no puede iniciar sesión con contraseña ni volver a registrarse. Consulté por qué y entendí que Firebase lo bloquea porque elegir una contraseña no prueba que el email sea propio. Decidí no agregar recuperación de contraseña, que excede la consigna, y en cambio aclarar los mensajes de error para orientar al usuario a usar Google.
 
+### Hito 5: Modelo de datos y seguridad
+
+- Definí primero los campos de una tarea, su tipo y si son obligatorios, y a partir de esa definición se escribieron la interfaz `Task` y las reglas de Firestore, con los mismos límites en los dos lugares.
+- Elegí publicar las reglas con la Firebase CLI para que queden versionadas en el repositorio en lugar de editarlas a mano en la consola.
+- Las fechas `createdAt` y `updatedAt` las asigna el servidor, y las reglas lo exigen, para que un cliente no pueda falsearlas.
+- Pedí una prueba explícita con dos usuarios reales: B no pudo leer, listar, editar ni borrar las tareas de A, ni crear tareas a su nombre. Los usuarios y datos de prueba se eliminaron al terminar.
+
 ## Patrones de uso que me resultaron efectivos
 
 - Pedir primero el análisis y el plan, y validar antes de generar código.
