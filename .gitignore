@@ -33,3 +33,8 @@ dist-ssr
 
 # Test coverage
 coverage
+
+# Firebase
+firebase-debug.log
+firestore-debug.log
+.firebase
