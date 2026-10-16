@@ -1,9 +1,10 @@
-function App() {
+import { AuthProvider } from './features/auth/AuthProvider';
+import { AppRouter } from './routes/AppRouter';
+
+export function App() {
   return (
-    <main>
-      <h1>Gestor de tareas</h1>
-    </main>
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
   );
 }
-
-export default App;

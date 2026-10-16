@@ -1,0 +1,19 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 100vh;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.page a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+}
