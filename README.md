@@ -80,7 +80,7 @@ npx firebase deploy --only firestore:rules,firestore:indexes
 
 ### Verificación
 
-Se probó con dos usuarios reales (A y B) contra las reglas publicadas, usando la API REST de Firestore:
+Se probó con dos usuarios reales (A y B) contra las reglas publicadas, usando la API REST de Firestore. La prueba se puede repetir con `npm run verify:rules`: crea dos usuarios temporales, ejecuta los casos y elimina los usuarios y datos de prueba al terminar.
 
 | Caso                                      | Resultado esperado | Resultado    |
 | ----------------------------------------- | ------------------ | ------------ |
@@ -107,16 +107,17 @@ Completar `.env` con las credenciales correspondientes. El archivo `.env` está 
 
 ## Scripts
 
-| Script               | Descripción                            |
-| -------------------- | -------------------------------------- |
-| `npm run dev`        | Servidor de desarrollo                 |
-| `npm run build`      | Chequeo de tipos y build de producción |
-| `npm run preview`    | Previsualiza el build                  |
-| `npm run lint`       | Linter (ESLint)                        |
-| `npm run format`     | Formatea el código con Prettier        |
-| `npm run typecheck`  | Chequeo de tipos                       |
-| `npm run test`       | Ejecuta los tests                      |
-| `npm run test:watch` | Tests en modo watch                    |
+| Script                 | Descripción                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `npm run dev`          | Servidor de desarrollo                                   |
+| `npm run build`        | Chequeo de tipos y build de producción                   |
+| `npm run preview`      | Previsualiza el build                                    |
+| `npm run lint`         | Linter (ESLint)                                          |
+| `npm run format`       | Formatea el código con Prettier                          |
+| `npm run typecheck`    | Chequeo de tipos                                         |
+| `npm run test`         | Ejecuta los tests                                        |
+| `npm run test:watch`   | Tests en modo watch                                      |
+| `npm run verify:rules` | Verifica las reglas de Firestore con dos usuarios reales |
 
 ## Uso de IA
 

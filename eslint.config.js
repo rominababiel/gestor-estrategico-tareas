@@ -21,7 +21,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['api/**/*.ts', '*.config.{js,ts}'],
+    files: ['api/**/*.ts', 'scripts/**/*.mjs', '*.config.{js,ts}'],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
       globals: globals.node,

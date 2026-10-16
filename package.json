@@ -12,7 +12,8 @@
     "format:check": "prettier --check .",
     "typecheck": "tsc -b",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify:rules": "node --env-file=.env scripts/verify-firestore-rules.mjs"
   },
   "dependencies": {
     "firebase": "^13.0.0",
