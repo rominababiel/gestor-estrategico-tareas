@@ -37,6 +37,14 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Tipé las variables `VITE_` en `vite-env.d.ts` para que TypeScript detecte nombres mal escritos.
 - Verifiqué la conexión contra las APIs de Firebase: Authentication rechazó credenciales inexistentes y Firestore respondió `PERMISSION_DENIED`, lo que confirma que la base existe y está protegida.
 
+### Hito 3: Autenticación
+
+- Le pedí que la sesión se gestionara con `onAuthStateChanged` (patrón Observer) dentro de un `AuthProvider`, y que el resto de la app accediera a ella solo a través del hook `useAuth`.
+- Los componentes no importan Firebase: `authService` es la única capa que conoce el SDK y convierte el `User` de Firebase en un tipo propio, `AuthUser`.
+- Los códigos de error de Firebase se traducen a mensajes en español en `authErrorMessages.ts`, una función pura que se puede testear sin Firebase.
+- Revisé que la validación de los formularios viviera en `utils/validators.ts` y que el estado de los formularios se manejara con un hook reutilizable, `useForm`, que también voy a usar para el formulario de tareas.
+- TypeScript rechazó usar `interface` para los valores de los formularios con un tipo genérico `Record<string, string>`. Entendí que las interfaces no tienen firma de índice implícita y los definí como `type`.
+
 ## Patrones de uso que me resultaron efectivos
 
 - Pedir primero el análisis y el plan, y validar antes de generar código.
