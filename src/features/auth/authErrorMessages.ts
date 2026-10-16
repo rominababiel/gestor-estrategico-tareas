@@ -1,3 +1,5 @@
+import { getErrorCode } from '../../utils/errors';
+
 const INVALID_CREDENTIALS_MESSAGE =
   'El email o la contraseña son incorrectos. Si te registraste con Google, usá "Continuar con Google".';
 
@@ -25,14 +27,6 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
 };
 
 export const DEFAULT_AUTH_ERROR_MESSAGE = 'Ocurrió un error inesperado. Intentá de nuevo.';
-
-function getErrorCode(error: unknown): string | undefined {
-  if (typeof error === 'object' && error !== null && 'code' in error) {
-    const { code } = error;
-    return typeof code === 'string' ? code : undefined;
-  }
-  return undefined;
-}
 
 export function getAuthErrorMessage(error: unknown): string {
   const code = getErrorCode(error);
