@@ -1,23 +1,14 @@
-import { useCallback } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { getAuthErrorMessage } from '../../features/auth/authErrorMessages';
 import { useAsyncAction } from '../../hooks/useAsyncAction';
 import { useAuth } from '../../hooks/useAuth';
-import { ROUTES } from '../../routes/paths';
 import { Alert } from '../ui/Alert';
 import { Header } from './Header';
 import styles from './Layout.module.css';
 
 export function Layout() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = useCallback(async () => {
-    await logout();
-    navigate(ROUTES.login, { replace: true });
-  }, [logout, navigate]);
-
-  const logoutAction = useAsyncAction(handleLogout, getAuthErrorMessage);
+  const logoutAction = useAsyncAction(logout, getAuthErrorMessage);
 
   return (
     <div className={styles.layout}>

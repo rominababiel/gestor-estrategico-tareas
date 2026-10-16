@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthCard } from '../components/auth/AuthCard';
 import { GoogleSignInButton } from '../components/auth/GoogleSignInButton';
 import { RegisterForm } from '../components/auth/RegisterForm';
@@ -10,13 +10,9 @@ import type { RegisterFormValues } from '../types/auth';
 
 export function RegisterPage() {
   const { register } = useAuth();
-  const navigate = useNavigate();
   const googleSignIn = useGoogleSignIn();
 
-  const handleRegister = async ({ email, password }: RegisterFormValues) => {
-    await register({ email, password });
-    navigate(ROUTES.tasks, { replace: true });
-  };
+  const handleRegister = ({ email, password }: RegisterFormValues) => register({ email, password });
 
   return (
     <AuthCard
