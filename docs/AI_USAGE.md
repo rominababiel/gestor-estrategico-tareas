@@ -51,6 +51,7 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Mientras Firebase resuelve el estado inicial de la sesión, ambas muestran un loader en lugar de redirigir, para evitar redirecciones prematuras y parpadeos.
 - La ruta que el usuario intentaba abrir viaja en el `state` de la navegación y se valida con `getRedirectPath` antes de usarla.
 - Al mover las redirecciones a las rutas, las páginas de login y registro y el logout dejaron de navegar por su cuenta: solo cambian el estado de la sesión y las rutas reaccionan a ese cambio.
+- Al probar, detecté que una cuenta creada con Google no puede iniciar sesión con contraseña ni volver a registrarse. Consulté por qué y entendí que Firebase lo bloquea porque elegir una contraseña no prueba que el email sea propio. Decidí no agregar recuperación de contraseña, que excede la consigna, y en cambio aclarar los mensajes de error para orientar al usuario a usar Google.
 
 ## Patrones de uso que me resultaron efectivos
 
