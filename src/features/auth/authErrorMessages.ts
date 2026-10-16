@@ -1,9 +1,13 @@
+const INVALID_CREDENTIALS_MESSAGE =
+  'El email o la contraseña son incorrectos. Si te registraste con Google, usá "Continuar con Google".';
+
 const AUTH_ERROR_MESSAGES: Record<string, string> = {
-  'auth/invalid-credential': 'El email o la contraseña son incorrectos.',
-  'auth/invalid-login-credentials': 'El email o la contraseña son incorrectos.',
+  'auth/invalid-credential': INVALID_CREDENTIALS_MESSAGE,
+  'auth/invalid-login-credentials': INVALID_CREDENTIALS_MESSAGE,
   'auth/user-not-found': 'No existe una cuenta con ese email.',
-  'auth/wrong-password': 'El email o la contraseña son incorrectos.',
-  'auth/email-already-in-use': 'Ya existe una cuenta registrada con ese email.',
+  'auth/wrong-password': INVALID_CREDENTIALS_MESSAGE,
+  'auth/email-already-in-use':
+    'Ya existe una cuenta con ese email. Si te registraste con Google, iniciá sesión con "Continuar con Google".',
   'auth/invalid-email': 'El email no es válido.',
   'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
   'auth/user-disabled': 'Esta cuenta fue deshabilitada.',
