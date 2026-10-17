@@ -69,6 +69,14 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Al probar con dos pestañas, la segunda tardaba en actualizarse. Entendí que el navegador limita las pestañas que no están a la vista.
 - Volví sobre el problema del login: una cuenta registrada con contraseña la pierde si después se entra con Google con el mismo email. Aunque la consigna no lo pide, decidí agregar verificación del email al registrarse, para que Firebase conserve la contraseña al vincular Google, y recuperación de contraseña, porque considero que un login sin recuperación queda incompleto.
 
+### Diseño de la interfaz
+
+- Le pedí un brief técnico del proyecto (pantallas, estados, componentes, tokens y restricciones) para pasárselo a Claude Design, que propuso el sistema de diseño "Equilibrio".
+- Antes de implementarlo, separamos lo que era solo visual de lo que agregaba comportamiento: barra de progreso, textos en los botones mientras cargan, botón para reintentar si fallan las tareas y textos nuevos. Incluí todo lo que no contradecía la consigna.
+- El diseño se aplicó solo con CSS Modules y variables CSS, sin sumar librerías, manteniendo los nombres de los tokens existentes.
+- Al probarlo en escritorio noté que una sola columna dejaba mucho espacio vacío y elegí un layout de dos columnas a partir de 1024 px, con el formulario fijo a la izquierda.
+- El botón de resumen por email y su plantilla quedaron diseñados para implementarlos junto con el envío real.
+
 ## Patrones de uso que me resultaron efectivos
 
 - Pedir primero el análisis y el plan, y validar antes de generar código.
