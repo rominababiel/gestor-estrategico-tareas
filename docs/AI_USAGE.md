@@ -66,7 +66,7 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Un mismo `TodoForm` sirve para crear y editar, y cada acción de una tarea (completar, editar, eliminar) tiene su propio estado de carga y de error.
 - Agregué filtros por estado (todas, pendientes, completadas) con su contador.
 - Al probar, eliminar borraba sin preguntar. Pedí una confirmación y elegí que fuera un modal, que quedó como componente reutilizable (`ConfirmDialog`) basado en el elemento nativo `<dialog>`.
-- Al probar con dos pestañas, la segunda tardaba en actualizarse. Entendí que el navegador limita las pestañas que no están a la vista y lo confirmé con dos ventanas visibles a la vez.
+- Al probar con dos pestañas, la segunda tardaba en actualizarse. Entendí que el navegador limita las pestañas que no están a la vista.
 - Volví sobre el problema del login: una cuenta registrada con contraseña la pierde si después se entra con Google con el mismo email. Aunque la consigna no lo pide, decidí agregar verificación del email al registrarse, para que Firebase conserve la contraseña al vincular Google, y recuperación de contraseña, porque considero que un login sin recuperación queda incompleto.
 
 ## Patrones de uso que me resultaron efectivos
