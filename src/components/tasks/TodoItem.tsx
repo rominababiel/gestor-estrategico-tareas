@@ -5,6 +5,7 @@ import type { Task, TaskFormValues } from '../../types/task';
 import { formatDate } from '../../utils/formatDate';
 import { Alert } from '../ui/Alert';
 import { Button } from '../ui/Button';
+import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { TodoForm } from './TodoForm';
 import styles from './TodoItem.module.css';
 
@@ -17,6 +18,7 @@ interface TodoItemProps {
 
 export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
 
   const toggle = useAsyncAction(
     useCallback(() => onToggle(task), [onToggle, task]),
@@ -26,6 +28,11 @@ export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) 
     useCallback(() => onDelete(task.id), [onDelete, task.id]),
     getTaskErrorMessage,
   );
+
+  const closeDeleteDialog = () => {
+    remove.reset();
+    setIsConfirmingDelete(false);
+  };
 
   const handleUpdate = async (values: TaskFormValues) => {
     await onUpdate(task.id, values);
@@ -45,8 +52,6 @@ export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) 
     );
   }
 
-  const error = toggle.error ?? remove.error;
-
   return (
     <li className={`${styles.item} ${task.completed ? styles.completed : ''}`}>
       <div className={styles.content}>
@@ -64,15 +69,25 @@ export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) 
           <p className={styles.meta}>Creada el {formatDate(task.createdAt)}</p>
         </div>
       </div>
-      {error && <Alert>{error}</Alert>}
+      {toggle.error && <Alert>{toggle.error}</Alert>}
       <div className={styles.actions}>
-        <Button variant="ghost" onClick={() => setIsEditing(true)} disabled={remove.isLoading}>
+        <Button variant="ghost" onClick={() => setIsEditing(true)}>
           Editar
         </Button>
-        <Button variant="danger" onClick={remove.execute} isLoading={remove.isLoading}>
+        <Button variant="danger" onClick={() => setIsConfirmingDelete(true)}>
           Eliminar
         </Button>
       </div>
+      <ConfirmDialog
+        isOpen={isConfirmingDelete}
+        title="Eliminar tarea"
+        message={`¿Seguro que querés eliminar "${task.title}"? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar"
+        isConfirming={remove.isLoading}
+        error={remove.error}
+        onConfirm={remove.execute}
+        onCancel={closeDeleteDialog}
+      />
     </li>
   );
 }
