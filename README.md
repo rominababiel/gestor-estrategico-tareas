@@ -95,6 +95,43 @@ Se probó con dos usuarios reales (A y B) contra las reglas publicadas, usando l
 | B crea una tarea con el `userId` de A     | Denegado           | ✅ Denegado  |
 | A crea una tarea con título vacío         | Denegado           | ✅ Denegado  |
 
+## Flujo de envío de emails
+
+El botón **Enviar resumen** de Mis tareas manda al usuario un email con todas sus tareas, usando AWS SES desde una Vercel Function. Las credenciales de AWS y de Firebase Admin viven solo en el servidor.
+
+1. El frontend (`src/services/emailService.ts`) obtiene el ID token de Firebase del usuario logueado y hace `POST /api/send-summary` con el header `Authorization: Bearer <token>`. No envía tareas ni destinatario.
+2. La función (`api/send-summary.ts`) verifica el token con Firebase Admin SDK. Si falta o no es válido, responde `401`.
+3. Exige que el email del token esté verificado (`403` si no), para no enviar emails a direcciones que el usuario no demostró que son suyas.
+4. Lee las tareas del usuario desde Firestore con Admin SDK, filtrando por su `uid`. Si no tiene tareas, responde `400`.
+5. Arma el email en HTML y texto plano (`api/_lib/summaryEmail.ts`) y lo envía con SES al email del token.
+6. Responde `200` con `{ sentTo, taskCount }`. Si SES falla responde `502` y, ante cualquier otro error, `500`, siempre sin exponer detalles internos.
+
+El frontend traduce cada código de error a un mensaje en español y muestra el resultado debajo de la barra de progreso.
+
+Mientras la cuenta de SES está en modo sandbox, solo se puede enviar a direcciones verificadas en SES. Para probar la función en local hay que usar `vercel dev`, porque `npm run dev` levanta solo el frontend.
+
+## Variables de entorno
+
+Se definen en `.env` para desarrollo local (ver `.env.example`) y en **Vercel → Settings → Environment Variables** para producción. Las variables con prefijo `VITE_` quedan incluidas en el bundle del navegador; el resto solo existe en el servidor.
+
+| Variable                            | Dónde se usa | Descripción                                                          |
+| ----------------------------------- | ------------ | -------------------------------------------------------------------- |
+| `VITE_FIREBASE_API_KEY`             | Frontend     | Configuración pública de la app web de Firebase                      |
+| `VITE_FIREBASE_AUTH_DOMAIN`         | Frontend     | Dominio de Firebase Authentication                                   |
+| `VITE_FIREBASE_PROJECT_ID`          | Frontend     | ID del proyecto de Firebase                                          |
+| `VITE_FIREBASE_STORAGE_BUCKET`      | Frontend     | Bucket del proyecto                                                  |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Frontend     | ID de mensajería del proyecto                                        |
+| `VITE_FIREBASE_APP_ID`              | Frontend     | ID de la app web                                                     |
+| `FIREBASE_ADMIN_PROJECT_ID`         | Servidor     | ID del proyecto, tomado de la cuenta de servicio                     |
+| `FIREBASE_ADMIN_CLIENT_EMAIL`       | Servidor     | Email de la cuenta de servicio de Firebase Admin                     |
+| `FIREBASE_ADMIN_PRIVATE_KEY`        | Servidor     | Clave privada de la cuenta de servicio, con los `\n` tal como vienen |
+| `SES_REGION`                        | Servidor     | Región de AWS donde está configurado SES (por ejemplo `us-east-1`)   |
+| `SES_ACCESS_KEY_ID`                 | Servidor     | Access key del usuario IAM con permiso `ses:SendEmail`               |
+| `SES_SECRET_ACCESS_KEY`             | Servidor     | Secret key de ese usuario IAM                                        |
+| `SES_FROM_EMAIL`                    | Servidor     | Remitente verificado en SES                                          |
+
+Las variables de SES no usan el prefijo `AWS_` porque Vercel reserva esos nombres.
+
 ## Instalación local
 
 Requisitos: Node.js 20 o superior.
@@ -105,7 +142,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Completar `.env` con las credenciales correspondientes. El archivo `.env` está excluido del repositorio.
+Completar `.env` con las credenciales correspondientes (ver [Variables de entorno](#variables-de-entorno)). El archivo `.env` está excluido del repositorio.
 
 ## Scripts
 
