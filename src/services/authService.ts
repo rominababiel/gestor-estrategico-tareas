@@ -2,6 +2,8 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -17,11 +19,18 @@ function toAuthUser(user: User): AuthUser {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName,
+    emailVerified: user.emailVerified,
   };
 }
 
+function getCurrentUser(): User {
+  if (!auth.currentUser) throw new Error('No authenticated user');
+  return auth.currentUser;
+}
+
 export async function registerWithEmail({ email, password }: Credentials): Promise<void> {
-  await createUserWithEmailAndPassword(auth, email.trim(), password);
+  const { user } = await createUserWithEmailAndPassword(auth, email.trim(), password);
+  await sendEmailVerification(user).catch(() => undefined);
 }
 
 export async function loginWithEmail({ email, password }: Credentials): Promise<void> {
@@ -30,6 +39,20 @@ export async function loginWithEmail({ email, password }: Credentials): Promise<
 
 export async function loginWithGoogle(): Promise<void> {
   await signInWithPopup(auth, googleProvider);
+}
+
+export function sendVerificationEmail(): Promise<void> {
+  return sendEmailVerification(getCurrentUser());
+}
+
+export async function reloadCurrentUser(): Promise<AuthUser> {
+  const user = getCurrentUser();
+  await user.reload();
+  return toAuthUser(user);
+}
+
+export function sendPasswordReset(email: string): Promise<void> {
+  return sendPasswordResetEmail(auth, email.trim());
 }
 
 export function logout(): Promise<void> {

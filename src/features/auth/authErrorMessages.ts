@@ -13,7 +13,7 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
   'auth/invalid-email': 'El email no es válido.',
   'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
   'auth/user-disabled': 'Esta cuenta fue deshabilitada.',
-  'auth/too-many-requests': 'Demasiados intentos fallidos. Esperá unos minutos e intentá de nuevo.',
+  'auth/too-many-requests': 'Demasiados intentos. Esperá unos minutos e intentá de nuevo.',
   'auth/network-request-failed':
     'No hay conexión. Revisá tu conexión a internet e intentá de nuevo.',
   'auth/popup-closed-by-user':

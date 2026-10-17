@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
+import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { LoginPage } from '../pages/LoginPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { RegisterPage } from '../pages/RegisterPage';
@@ -23,6 +24,14 @@ const router = createBrowserRouter([
     element: (
       <PublicOnlyRoute>
         <RegisterPage />
+      </PublicOnlyRoute>
+    ),
+  },
+  {
+    path: ROUTES.forgotPassword,
+    element: (
+      <PublicOnlyRoute>
+        <ForgotPasswordPage />
       </PublicOnlyRoute>
     ),
   },

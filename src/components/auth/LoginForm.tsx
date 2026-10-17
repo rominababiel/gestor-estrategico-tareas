@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { getAuthErrorMessage } from '../../features/auth/authErrorMessages';
 import { useForm } from '../../hooks/useForm';
+import { ROUTES } from '../../routes/paths';
 import type { LoginFormValues } from '../../types/auth';
 import { validateLoginForm } from '../../utils/validators';
 import { Alert } from '../ui/Alert';
@@ -42,6 +44,9 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         onChange={handleChange}
         error={errors.password}
       />
+      <Link to={ROUTES.forgotPassword} className={styles.forgotLink}>
+        ¿Olvidaste tu contraseña?
+      </Link>
       <Button type="submit" fullWidth isLoading={isSubmitting}>
         Iniciar sesión
       </Button>

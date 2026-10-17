@@ -2,7 +2,7 @@ import {
   TASK_DESCRIPTION_MAX_LENGTH,
   TASK_TITLE_MAX_LENGTH,
 } from '../features/tasks/taskConstraints';
-import type { LoginFormValues, RegisterFormValues } from '../types/auth';
+import type { ForgotPasswordFormValues, LoginFormValues, RegisterFormValues } from '../types/auth';
 import type { FormErrors, FormValues } from '../types/form';
 import type { TaskFormValues } from '../types/task';
 
@@ -30,6 +30,12 @@ export function validateLoginForm(values: LoginFormValues): FormErrors<LoginForm
     email: validateEmail(values.email),
     password: values.password ? undefined : 'La contraseña es obligatoria.',
   };
+}
+
+export function validateForgotPasswordForm(
+  values: ForgotPasswordFormValues,
+): FormErrors<ForgotPasswordFormValues> {
+  return { email: validateEmail(values.email) };
 }
 
 export function validateRegisterForm(values: RegisterFormValues): FormErrors<RegisterFormValues> {
