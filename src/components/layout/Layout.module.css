@@ -13,3 +13,10 @@
   margin: 0 auto;
   padding: var(--space-3) var(--space-4) 3.5rem;
 }
+
+@media (min-width: 1024px) {
+  .main {
+    max-width: calc(var(--content-max-width-wide) + 6rem);
+    padding: var(--space-6) 3rem 3.5rem;
+  }
+}

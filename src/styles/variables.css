@@ -76,6 +76,7 @@
   --checkbox-size: 1.625rem;
   --focus-outline: 2px solid var(--color-focus);
   --content-max-width: 40rem;
+  --content-max-width-wide: 70rem;
   --transition: 150ms ease;
   --spinner-duration: 0.7s;
 }

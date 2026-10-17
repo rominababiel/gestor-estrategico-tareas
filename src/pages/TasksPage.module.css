@@ -78,3 +78,21 @@
   background-color: var(--color-surface);
   border-color: var(--alert-error-text);
 }
+
+@media (min-width: 1024px) {
+  .page {
+    display: grid;
+    grid-template-columns: 22.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-8);
+  }
+
+  .card {
+    position: sticky;
+    top: var(--space-6);
+  }
+
+  .heading {
+    padding-top: 0;
+  }
+}
