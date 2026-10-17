@@ -74,3 +74,11 @@
     padding: 0 1.125rem;
   }
 }
+
+@media (min-width: 1024px) {
+  .header {
+    width: 100%;
+    max-width: calc(var(--content-max-width-wide) + 6rem);
+    margin: 0 auto;
+  }
+}
