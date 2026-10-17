@@ -1,10 +1,6 @@
 import { ROUTES } from './paths';
 
-const PUBLIC_ONLY_PATHS: readonly string[] = [ROUTES.login, ROUTES.register];
-
-export interface RedirectState {
-  from: string;
-}
+const PUBLIC_ONLY_PATHS: readonly string[] = [ROUTES.login, ROUTES.register, ROUTES.forgotPassword];
 
 export function getRedirectPath(state: unknown): string {
   if (typeof state === 'object' && state !== null && 'from' in state) {

@@ -1,4 +1,4 @@
-import type { TaskCounts } from '../../features/tasks/filterTasks';
+import type { TaskCounts } from '../../types/task';
 import type { TaskFilter } from '../../types/task';
 import styles from './TaskFilters.module.css';
 

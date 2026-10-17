@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { FullPageLoader } from '../components/layout/FullPageLoader';
 import { useAuth } from '../hooks/useAuth';
 import { ROUTES } from './paths';
-import type { RedirectState } from './redirect';
+import type { RedirectState } from '../types/routes';
 
 interface ProtectedRouteProps {
   children: ReactNode;

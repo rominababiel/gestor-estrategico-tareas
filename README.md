@@ -90,6 +90,8 @@ Se probó con dos usuarios reales (A y B) contra las reglas publicadas, usando l
 | B edita la tarea de A                     | Denegado           | ✅ Denegado  |
 | B elimina la tarea de A                   | Denegado           | ✅ Denegado  |
 | Sin sesión lee la tarea de A              | Denegado           | ✅ Denegado  |
+| A lista todas las tareas sin filtrar      | Denegado           | ✅ Denegado  |
+| A pasa su tarea a nombre de B             | Denegado           | ✅ Denegado  |
 | B crea una tarea con el `userId` de A     | Denegado           | ✅ Denegado  |
 | A crea una tarea con título vacío         | Denegado           | ✅ Denegado  |
 

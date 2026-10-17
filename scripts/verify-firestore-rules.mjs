@@ -100,6 +100,35 @@ async function updateTitle(token, docId) {
   return res.status;
 }
 
+async function listAllTasks(token) {
+  const res = await fetch(`${FS}:runQuery`, {
+    method: 'POST',
+    headers: headers(token),
+    body: JSON.stringify({ structuredQuery: { from: [{ collectionId: 'tasks' }] } }),
+  });
+  return res.status;
+}
+
+async function transferTask(token, docId, newOwnerId) {
+  const res = await fetch(`${FS}:commit`, {
+    method: 'POST',
+    headers: headers(token),
+    body: JSON.stringify({
+      writes: [
+        {
+          update: {
+            name: `${DB}/tasks/${docId}`,
+            fields: { userId: { stringValue: newOwnerId } },
+          },
+          updateMask: { fieldPaths: ['userId'] },
+          updateTransforms: [{ fieldPath: 'updatedAt', setToServerValue: 'REQUEST_TIME' }],
+        },
+      ],
+    }),
+  });
+  return res.status;
+}
+
 const deleteTask = async (token, docId) =>
   (await fetch(`${FS}/tasks/${docId}`, { method: 'DELETE', headers: headers(token) })).status;
 
@@ -125,6 +154,8 @@ try {
   check('B edita la tarea de A', await updateTitle(userB.token, docId), 403);
   check('B elimina la tarea de A', await deleteTask(userB.token, docId), 403);
   check('Sin sesión lee la tarea de A', await getTask(null, docId), 403);
+  check('A lista todas las tareas sin filtrar por userId', await listAllTasks(userA.token), 403);
+  check('A pasa su tarea a nombre de B', await transferTask(userA.token, docId, userB.uid), 403);
 
   check(
     'B crea una tarea a nombre de A',
@@ -141,6 +172,9 @@ try {
   check('A elimina su tarea', await deleteTask(userA.token, docId), 200);
 } finally {
   await deleteTask(userA.token, docId);
+  await deleteTask(userA.token, `${docId}-empty`);
+  await deleteTask(userB.token, `${docId}-spoof`);
+  await deleteTask(userA.token, `${docId}-spoof`);
   await deleteAccount(userA.token);
   await deleteAccount(userB.token);
 }

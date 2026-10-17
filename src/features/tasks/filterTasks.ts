@@ -1,6 +1,4 @@
-import type { Task, TaskFilter } from '../../types/task';
-
-export type TaskCounts = Record<TaskFilter, number>;
+import type { Task, TaskCounts, TaskFilter } from '../../types/task';
 
 export function filterTasks(tasks: Task[], filter: TaskFilter): Task[] {
   switch (filter) {

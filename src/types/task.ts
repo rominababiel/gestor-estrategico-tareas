@@ -16,3 +16,5 @@ export type TaskFormValues = {
 export type TaskUpdate = Partial<Pick<Task, 'title' | 'description' | 'completed'>>;
 
 export type TaskFilter = 'all' | 'pending' | 'completed';
+
+export type TaskCounts = Record<TaskFilter, number>;
