@@ -16,6 +16,13 @@ interface TasksState {
   error: string | null;
 }
 
+function waitForServerWhenOnline(write: Promise<void>): Promise<void> {
+  if (navigator.onLine) return write;
+
+  write.catch(() => undefined);
+  return Promise.resolve();
+}
+
 const INITIAL_STATE: TasksState = { userId: null, attempt: 0, tasks: [], error: null };
 
 export function useTasks() {
@@ -39,22 +46,27 @@ export function useTasks() {
   const createTask = useCallback(
     async (values: TaskFormValues) => {
       if (!userId) throw new Error('Cannot create a task without an authenticated user');
-      await createTaskInService(userId, values);
+      await waitForServerWhenOnline(createTaskInService(userId, values));
     },
     [userId],
   );
 
   const updateTask = useCallback(
-    (taskId: string, values: TaskFormValues) => updateTaskInService(taskId, values),
+    (taskId: string, values: TaskFormValues) =>
+      waitForServerWhenOnline(updateTaskInService(taskId, values)),
     [],
   );
 
   const toggleTask = useCallback(
-    (task: Task) => updateTaskInService(task.id, { completed: !task.completed }),
+    (task: Task) =>
+      waitForServerWhenOnline(updateTaskInService(task.id, { completed: !task.completed })),
     [],
   );
 
-  const deleteTask = useCallback((taskId: string) => deleteTaskInService(taskId), []);
+  const deleteTask = useCallback(
+    (taskId: string) => waitForServerWhenOnline(deleteTaskInService(taskId)),
+    [],
+  );
 
   const isCurrentUserState = state.userId === userId && state.attempt === attempt;
 
