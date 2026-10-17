@@ -60,6 +60,15 @@ Utilicé Claude Code como asistente de desarrollo. Mi forma de trabajo fue pedir
 - Las fechas `createdAt` y `updatedAt` las asigna el servidor, y las reglas lo exigen, para que un cliente no pueda falsearlas.
 - Pedí una prueba explícita con dos usuarios reales: B no pudo leer, listar, editar ni borrar las tareas de A, ni crear tareas a su nombre. Los usuarios y datos de prueba se eliminaron al terminar.
 
+### Hito 6: CRUD de tareas
+
+- Las tareas se escuchan en tiempo real con `onSnapshot`, y la suscripción se cancela al desmontar el componente o al cambiar de usuario para no dejar listeners abiertos.
+- Un mismo `TodoForm` sirve para crear y editar, y cada acción de una tarea (completar, editar, eliminar) tiene su propio estado de carga y de error.
+- Agregué filtros por estado (todas, pendientes, completadas) con su contador.
+- Al probar, eliminar borraba sin preguntar. Pedí una confirmación y elegí que fuera un modal, que quedó como componente reutilizable (`ConfirmDialog`) basado en el elemento nativo `<dialog>`.
+- Al probar con dos pestañas, la segunda tardaba en actualizarse. Entendí que el navegador limita las pestañas que no están a la vista y lo confirmé con dos ventanas visibles a la vez.
+- Volví sobre el problema del login: una cuenta registrada con contraseña la pierde si después se entra con Google con el mismo email. Aunque la consigna no lo pide, decidí agregar verificación del email al registrarse, para que Firebase conserve la contraseña al vincular Google, y recuperación de contraseña, porque considero que un login sin recuperación queda incompleto.
+
 ## Patrones de uso que me resultaron efectivos
 
 - Pedir primero el análisis y el plan, y validar antes de generar código.
