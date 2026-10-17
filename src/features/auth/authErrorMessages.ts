@@ -9,7 +9,7 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
   'auth/user-not-found': 'No existe una cuenta con ese email.',
   'auth/wrong-password': INVALID_CREDENTIALS_MESSAGE,
   'auth/email-already-in-use':
-    'Ya existe una cuenta con ese email. Si te registraste con Google, iniciá sesión con "Continuar con Google".',
+    'Ya hay una cuenta con este email. Iniciá sesión o usá "Continuar con Google".',
   'auth/invalid-email': 'El email no es válido.',
   'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
   'auth/user-disabled': 'Esta cuenta fue deshabilitada.',

@@ -15,15 +15,15 @@ interface ForgotPasswordFormProps {
 }
 
 export function ForgotPasswordForm({ onSubmit }: ForgotPasswordFormProps) {
-  const [isSent, setIsSent] = useState(false);
+  const [sentTo, setSentTo] = useState<string | null>(null);
 
   const { values, errors, submitError, isSubmitting, handleChange, handleSubmit } = useForm({
     initialValues: INITIAL_VALUES,
     validate: validateForgotPasswordForm,
     onSubmit: async ({ email }) => {
-      setIsSent(false);
+      setSentTo(null);
       await onSubmit(email);
-      setIsSent(true);
+      setSentTo(email.trim());
     },
     getErrorMessage: getAuthErrorMessage,
   });
@@ -31,10 +31,10 @@ export function ForgotPasswordForm({ onSubmit }: ForgotPasswordFormProps) {
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
       {submitError && <Alert>{submitError}</Alert>}
-      {isSent && (
+      {sentTo && (
         <Alert variant="success">
-          Si existe una cuenta con ese email, te enviamos un link para elegir una nueva contraseña.
-          Revisá tu bandeja de entrada y la carpeta de spam.
+          Listo. Si {sentTo} tiene una cuenta, te va a llegar el link en unos minutos. Revisá
+          también la carpeta de spam.
         </Alert>
       )}
       <Input
@@ -44,9 +44,10 @@ export function ForgotPasswordForm({ onSubmit }: ForgotPasswordFormProps) {
         autoComplete="email"
         value={values.email}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.email}
       />
-      <Button type="submit" fullWidth isLoading={isSubmitting}>
+      <Button type="submit" fullWidth isLoading={isSubmitting} loadingText="Enviando…">
         Enviar link
       </Button>
     </form>

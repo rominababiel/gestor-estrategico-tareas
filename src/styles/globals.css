@@ -11,9 +11,10 @@ body {
   min-height: 100vh;
   font-family: var(--font-family);
   font-size: var(--font-size-md);
-  line-height: 1.5;
+  line-height: var(--line-height-base);
   color: var(--color-text);
   background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -27,4 +28,17 @@ button,
 input,
 textarea {
   font: inherit;
+}
+
+a {
+  color: var(--color-text);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
 }

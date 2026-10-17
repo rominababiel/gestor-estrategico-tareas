@@ -18,6 +18,7 @@ interface TodoFormProps {
   onSubmit: (values: TaskFormValues) => Promise<void>;
   initialValues?: TaskFormValues;
   submitLabel?: string;
+  submittingLabel?: string;
   onCancel?: () => void;
 }
 
@@ -25,9 +26,11 @@ export function TodoForm({
   onSubmit,
   initialValues,
   submitLabel = 'Agregar tarea',
+  submittingLabel = 'Agregando…',
   onCancel,
 }: TodoFormProps) {
   const isEditing = Boolean(initialValues);
+  const buttonSize = isEditing ? 'sm' : 'md';
   const { values, errors, submitError, isSubmitting, handleChange, handleSubmit } = useForm({
     initialValues: initialValues ?? EMPTY_TASK,
     validate: validateTaskForm,
@@ -45,6 +48,7 @@ export function TodoForm({
         maxLength={TASK_TITLE_MAX_LENGTH}
         value={values.title}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.title}
       />
       <TextArea
@@ -53,15 +57,21 @@ export function TodoForm({
         maxLength={TASK_DESCRIPTION_MAX_LENGTH}
         value={values.description}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.description}
       />
       <div className={styles.actions}>
         {onCancel && (
-          <Button variant="secondary" onClick={onCancel} disabled={isSubmitting}>
+          <Button variant="secondary" size={buttonSize} onClick={onCancel} disabled={isSubmitting}>
             Cancelar
           </Button>
         )}
-        <Button type="submit" isLoading={isSubmitting}>
+        <Button
+          type="submit"
+          size={buttonSize}
+          isLoading={isSubmitting}
+          loadingText={submittingLabel}
+        >
           {submitLabel}
         </Button>
       </div>

@@ -8,6 +8,7 @@ interface ConfirmDialogProps {
   title: string;
   message: string;
   confirmLabel?: string;
+  confirmingLabel?: string;
   isConfirming?: boolean;
   error?: string | null;
   onConfirm: () => void;
@@ -19,6 +20,7 @@ export function ConfirmDialog({
   title,
   message,
   confirmLabel = 'Confirmar',
+  confirmingLabel,
   isConfirming = false,
   error,
   onConfirm,
@@ -67,10 +69,15 @@ export function ConfirmDialog({
         </p>
         {error && <Alert>{error}</Alert>}
         <div className={styles.actions}>
-          <Button variant="ghost" onClick={requestCancel} disabled={isConfirming}>
+          <Button variant="secondary" onClick={requestCancel} disabled={isConfirming}>
             Cancelar
           </Button>
-          <Button variant="danger" onClick={onConfirm} isLoading={isConfirming}>
+          <Button
+            variant="danger"
+            onClick={onConfirm}
+            isLoading={isConfirming}
+            loadingText={confirmingLabel}
+          >
             {confirmLabel}
           </Button>
         </div>

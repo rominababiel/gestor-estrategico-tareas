@@ -1,9 +1,10 @@
 .spinner {
   display: inline-block;
-  border: 2px solid currentColor;
-  border-right-color: transparent;
+  flex: none;
+  border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-top-color: currentColor;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin var(--spinner-duration) linear infinite;
 }
 
 .sm {

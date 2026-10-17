@@ -31,6 +31,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         autoComplete="email"
         value={values.email}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.email}
       />
       <Input
@@ -41,6 +42,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         placeholder={`Mínimo ${MIN_PASSWORD_LENGTH} caracteres`}
         value={values.password}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.password}
       />
       <Input
@@ -50,9 +52,10 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         autoComplete="new-password"
         value={values.confirmPassword}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.confirmPassword}
       />
-      <Button type="submit" fullWidth isLoading={isSubmitting}>
+      <Button type="submit" fullWidth isLoading={isSubmitting} loadingText="Creando cuenta…">
         Crear cuenta
       </Button>
     </form>

@@ -2,17 +2,22 @@ import type { ButtonHTMLAttributes } from 'react';
 import { Spinner } from './Spinner';
 import styles from './Button.module.css';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'dangerGhost';
+type ButtonSize = 'md' | 'sm';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  size?: ButtonSize;
   isLoading?: boolean;
+  loadingText?: string;
   fullWidth?: boolean;
 }
 
 export function Button({
   variant = 'primary',
+  size = 'md',
   isLoading = false,
+  loadingText,
   fullWidth = false,
   type = 'button',
   disabled,
@@ -20,7 +25,13 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const classNames = [styles.button, styles[variant], fullWidth && styles.fullWidth, className]
+  const classNames = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    fullWidth && styles.fullWidth,
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 
@@ -33,7 +44,7 @@ export function Button({
       {...props}
     >
       {isLoading && <Spinner size="sm" />}
-      {children}
+      {isLoading && loadingText ? loadingText : children}
     </button>
   );
 }

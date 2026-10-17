@@ -33,7 +33,13 @@ export function GoogleSignInButton({ onClick, isLoading }: GoogleSignInButtonPro
   return (
     <>
       <div className={styles.divider}>o</div>
-      <Button variant="secondary" fullWidth isLoading={isLoading} onClick={onClick}>
+      <Button
+        variant="secondary"
+        fullWidth
+        isLoading={isLoading}
+        loadingText="Conectando…"
+        onClick={onClick}
+      >
         {!isLoading && <GoogleIcon />}
         Continuar con Google
       </Button>

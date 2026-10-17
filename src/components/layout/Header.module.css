@@ -1,40 +1,76 @@
 .header {
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: var(--space-2) var(--space-4);
+  gap: 0.625rem;
+  padding: var(--space-3) var(--space-4);
 }
 
-.brand {
-  font-weight: 700;
+.mark {
+  --brand-mark-size: 1.25rem;
 }
 
-.user {
+.identity {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
   min-width: 0;
 }
 
+.name {
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
 .email {
-  display: none;
   overflow: hidden;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.header .logout {
+  padding: 0 0.875rem;
+  background-color: var(--color-surface);
+}
+
+.header .logout:hover:not(:disabled) {
+  background-color: var(--color-disabled-bg);
+}
+
+.header .logout:disabled {
+  color: var(--color-text-disabled);
+}
+
 @media (min-width: 600px) {
+  .header {
+    gap: var(--space-4);
+    min-height: 5rem;
+    padding: 0 3rem;
+  }
+
+  .mark {
+    --brand-mark-size: 1.375rem;
+  }
+
+  .identity {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .name {
+    flex: 1;
+    font-size: 1.125rem;
+  }
+
   .email {
-    display: inline;
+    font-size: var(--font-size-sm);
+  }
+
+  .header .logout {
+    padding: 0 1.125rem;
   }
 }

@@ -1,24 +1,26 @@
 .alert {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) 0.875rem;
   border: 1px solid;
   border-radius: var(--radius);
   font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  overflow-wrap: anywhere;
 }
 
 .error {
-  color: #991b1b;
-  background-color: #fef2f2;
-  border-color: #fecaca;
+  color: var(--alert-error-text);
+  background-color: var(--alert-error-bg);
+  border-color: var(--alert-error-border);
 }
 
 .success {
-  color: #166534;
-  background-color: #f0fdf4;
-  border-color: #bbf7d0;
+  color: var(--alert-success-text);
+  background-color: var(--alert-success-bg);
+  border-color: var(--alert-success-border);
 }
 
 .info {
-  color: #1e3a8a;
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
+  color: var(--alert-info-text);
+  background-color: var(--alert-info-bg);
+  border-color: var(--alert-info-border);
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getTaskErrorMessage } from '../features/tasks/taskErrorMessages';
+import { getLoadTasksErrorMessage } from '../features/tasks/taskErrorMessages';
 import {
   createTask as createTaskInService,
   deleteTask as deleteTaskInService,
@@ -11,26 +11,30 @@ import { useAuth } from './useAuth';
 
 interface TasksState {
   userId: string | null;
+  attempt: number;
   tasks: Task[];
   error: string | null;
 }
 
-const INITIAL_STATE: TasksState = { userId: null, tasks: [], error: null };
+const INITIAL_STATE: TasksState = { userId: null, attempt: 0, tasks: [], error: null };
 
 export function useTasks() {
   const { user } = useAuth();
   const userId = user?.uid ?? null;
   const [state, setState] = useState<TasksState>(INITIAL_STATE);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!userId) return;
 
     return subscribeToUserTasks(
       userId,
-      (tasks) => setState({ userId, tasks, error: null }),
-      (error) => setState({ userId, tasks: [], error: getTaskErrorMessage(error) }),
+      (tasks) => setState({ userId, attempt, tasks, error: null }),
+      (error) => setState({ userId, attempt, tasks: [], error: getLoadTasksErrorMessage(error) }),
     );
-  }, [userId]);
+  }, [userId, attempt]);
+
+  const retry = useCallback(() => setAttempt((previous) => previous + 1), []);
 
   const createTask = useCallback(
     async (values: TaskFormValues) => {
@@ -52,7 +56,7 @@ export function useTasks() {
 
   const deleteTask = useCallback((taskId: string) => deleteTaskInService(taskId), []);
 
-  const isCurrentUserState = state.userId === userId;
+  const isCurrentUserState = state.userId === userId && state.attempt === attempt;
 
   return {
     tasks: isCurrentUserState ? state.tasks : [],
@@ -62,5 +66,6 @@ export function useTasks() {
     updateTask,
     toggleTask,
     deleteTask,
+    retry,
   };
 }

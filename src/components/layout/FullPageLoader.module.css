@@ -1,7 +1,26 @@
 .loader {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  color: var(--color-primary);
+  gap: var(--space-5);
+  min-height: 100dvh;
+  animation: fade-in 150ms ease 200ms both;
+}
+
+.spinner {
+  display: inline-flex;
+  color: var(--color-accent);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader {
+    animation-duration: 0ms;
+  }
 }

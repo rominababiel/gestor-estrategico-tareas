@@ -33,6 +33,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         autoComplete="email"
         value={values.email}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.email}
       />
       <Input
@@ -42,12 +43,13 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         autoComplete="current-password"
         value={values.password}
         onChange={handleChange}
+        disabled={isSubmitting}
         error={errors.password}
       />
       <Link to={ROUTES.forgotPassword} className={styles.forgotLink}>
         ¿Olvidaste tu contraseña?
       </Link>
-      <Button type="submit" fullWidth isLoading={isSubmitting}>
+      <Button type="submit" fullWidth isLoading={isSubmitting} loadingText="Ingresando…">
         Iniciar sesión
       </Button>
     </form>

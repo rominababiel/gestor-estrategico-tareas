@@ -28,7 +28,7 @@ export function validateNewPassword(password: string): string | undefined {
 export function validateLoginForm(values: LoginFormValues): FormErrors<LoginFormValues> {
   return {
     email: validateEmail(values.email),
-    password: values.password ? undefined : 'La contraseña es obligatoria.',
+    password: values.password ? undefined : 'Ingresá tu contraseña.',
   };
 }
 
