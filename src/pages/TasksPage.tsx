@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SendSummaryButton } from '../components/tasks/SendSummaryButton';
 import { TaskFilters } from '../components/tasks/TaskFilters';
 import { TaskProgress } from '../components/tasks/TaskProgress';
 import { TodoForm } from '../components/tasks/TodoForm';
@@ -6,7 +7,9 @@ import { TodoList } from '../components/tasks/TodoList';
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
 import { Spinner } from '../components/ui/Spinner';
+import { getSummarySuccessMessage } from '../features/email/summaryErrorMessages';
 import { countTasks, filterTasks } from '../features/tasks/filterTasks';
+import { useSendSummary } from '../hooks/useSendSummary';
 import { useTasks } from '../hooks/useTasks';
 import type { TaskFilter } from '../types/task';
 import styles from './TasksPage.module.css';
@@ -20,6 +23,7 @@ const EMPTY_MESSAGES: Record<TaskFilter, string> = {
 export function TasksPage() {
   const { tasks, isLoading, error, createTask, updateTask, toggleTask, deleteTask, retry } =
     useTasks();
+  const summary = useSendSummary();
   const [filter, setFilter] = useState<TaskFilter>('all');
   const counts = countTasks(tasks);
   const isReady = !isLoading && !error;
@@ -35,10 +39,21 @@ export function TasksPage() {
 
       <section className={styles.tasks} aria-labelledby="tasks-title">
         <div className={styles.heading}>
-          <h1 id="tasks-title" className={styles.title}>
-            Mis tareas
-          </h1>
+          <div className={styles.titleRow}>
+            <h1 id="tasks-title" className={styles.title}>
+              Mis tareas
+            </h1>
+            <SendSummaryButton
+              status={summary.status}
+              disabled={!isReady || counts.all === 0}
+              onSend={summary.send}
+            />
+          </div>
           {isReady && <TaskProgress completed={counts.completed} total={counts.all} />}
+          {summary.result && (
+            <Alert variant="success">{getSummarySuccessMessage(summary.result)}</Alert>
+          )}
+          {summary.error && <Alert>{summary.error}</Alert>}
         </div>
 
         {isLoading && (

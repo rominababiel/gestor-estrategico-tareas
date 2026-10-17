@@ -1,0 +1,29 @@
+.button {
+  flex: none;
+}
+
+.sent {
+  font-weight: var(--font-weight-bold);
+  color: var(--alert-success-text);
+  background-color: var(--alert-success-bg);
+  border-color: transparent;
+}
+
+.sent:hover:not(:disabled) {
+  background-color: var(--alert-success-bg);
+  border-color: var(--alert-success-border);
+}
+
+.long {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .short {
+    display: none;
+  }
+
+  .long {
+    display: inline;
+  }
+}
