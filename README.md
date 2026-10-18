@@ -108,7 +108,19 @@ El botón **Enviar resumen** de Mis tareas manda al usuario un email con todas s
 
 El frontend traduce cada código de error a un mensaje en español y muestra el resultado debajo de la barra de progreso.
 
-Mientras la cuenta de SES está en modo sandbox, solo se puede enviar a direcciones verificadas en SES. Para probar la función en local hay que usar `vercel dev`, porque `npm run dev` levanta solo el frontend.
+Para probar la función en local hay que usar `vercel dev`, porque `npm run dev` levanta solo el frontend.
+
+### Modo sandbox de SES
+
+La cuenta de SES está en modo sandbox: solo envía emails a direcciones verificadas en SES. Si el usuario logueado tiene un email no verificado, la función responde `502` y la app muestra "No pudimos enviar el resumen".
+
+Para habilitar un destinatario:
+
+1. En la consola de AWS, región `us-east-1`, entrar a **Amazon SES → Configuración → Identidades → Crear identidad**.
+2. Elegir **Dirección de correo electrónico**, ingresar el email y crear la identidad.
+3. Abrir el email de verificación que envía AWS y hacer clic en el enlace.
+
+A partir de ahí, ese usuario puede recibir su resumen desde la app.
 
 ## Variables de entorno
 
