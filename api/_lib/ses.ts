@@ -8,6 +8,21 @@ export class EmailDeliveryError extends Error {
   }
 }
 
+export class RecipientNotAllowedError extends Error {
+  constructor() {
+    super('SES sandbox rejected an unverified recipient');
+    this.name = 'RecipientNotAllowedError';
+  }
+}
+
+function isUnverifiedAddressError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    error.name === 'MessageRejected' &&
+    /not verified/i.test(error.message)
+  );
+}
+
 export interface EmailMessage {
   to: string;
   subject: string;
@@ -51,6 +66,7 @@ export async function sendEmail({ to, subject, html, text }: EmailMessage): Prom
   try {
     await getClient(config).send(command);
   } catch (error) {
+    if (isUnverifiedAddressError(error)) throw new RecipientNotAllowedError();
     throw new EmailDeliveryError(error);
   }
 }

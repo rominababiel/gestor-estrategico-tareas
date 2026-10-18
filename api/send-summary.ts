@@ -1,7 +1,7 @@
 import { getBearerToken, UnauthorizedError, verifyUser } from './_lib/auth.js';
 import { MissingConfigError } from './_lib/env.js';
 import { json } from './_lib/http.js';
-import { EmailDeliveryError, sendEmail } from './_lib/ses.js';
+import { EmailDeliveryError, RecipientNotAllowedError, sendEmail } from './_lib/ses.js';
 import { buildSummaryEmail } from './_lib/summaryEmail.js';
 import { getUserTasks } from './_lib/tasks.js';
 
@@ -29,6 +29,9 @@ async function sendSummary(request: Request): Promise<Response> {
     console.error('send-summary failed:', error instanceof Error ? error.name : 'UnknownError');
 
     if (error instanceof MissingConfigError) return json({ error: 'server-misconfigured' }, 500);
+    if (error instanceof RecipientNotAllowedError) {
+      return json({ error: 'recipient-not-allowed' }, 403);
+    }
     if (error instanceof EmailDeliveryError) return json({ error: 'email-failed' }, 502);
     return json({ error: 'internal-error' }, 500);
   }

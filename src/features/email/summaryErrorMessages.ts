@@ -6,6 +6,7 @@ const SUMMARY_ERROR_MESSAGES: Record<string, string> = {
   'invalid-token': 'Tu sesión expiró. Iniciá sesión de nuevo.',
   'email-not-verified':
     'Primero verificá tu email con el link que te enviamos y después volvé a pedir el resumen.',
+  'recipient-not-allowed': 'Por ahora el envío solo está habilitado para emails autorizados.',
   'no-tasks': 'Todavía no tenés tareas para incluir en el resumen.',
   'network-error': 'No hay conexión. Revisá tu conexión a internet y probá de nuevo.',
 };

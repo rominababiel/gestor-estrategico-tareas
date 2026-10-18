@@ -91,6 +91,18 @@ describe('Enviar resumen', () => {
     expect(screen.getByRole('button', { name: 'Reintentar' })).toBeInTheDocument();
   });
 
+  it('explains when the recipient is not enabled for sending', async () => {
+    mockTasks();
+    vi.mocked(sendTaskSummary).mockRejectedValue(new SummaryRequestError('recipient-not-allowed'));
+    render(<TasksPage />);
+
+    await userEvent.click(getSummaryButton());
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Por ahora el envío solo está habilitado para emails autorizados.',
+    );
+  });
+
   it('asks to verify the email when the function rejects an unverified account', async () => {
     mockTasks();
     vi.mocked(sendTaskSummary).mockRejectedValue(new SummaryRequestError('email-not-verified'));

@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { UnauthorizedError, verifyUser } from '../../api/_lib/auth.js';
-import { EmailDeliveryError, sendEmail } from '../../api/_lib/ses.js';
+import { EmailDeliveryError, RecipientNotAllowedError, sendEmail } from '../../api/_lib/ses.js';
 import { getUserTasks, type SummaryTask } from '../../api/_lib/tasks.js';
 import handler from '../../api/send-summary.js';
 
@@ -96,6 +96,15 @@ describe('POST /api/send-summary', () => {
     vi.mocked(sendEmail).mockRejectedValue(new EmailDeliveryError(new Error('AccessDenied')));
 
     expect(await call(request())).toEqual({ status: 502, body: { error: 'email-failed' } });
+  });
+
+  it('answers 403 when the SES sandbox rejects the recipient', async () => {
+    vi.mocked(sendEmail).mockRejectedValue(new RecipientNotAllowedError());
+
+    expect(await call(request())).toEqual({
+      status: 403,
+      body: { error: 'recipient-not-allowed' },
+    });
   });
 
   it('answers 500 for unexpected errors', async () => {
