@@ -130,6 +130,7 @@ Estos son los prompts más importantes que usé durante el desarrollo.
 ### Hito 8: Tests
 
 - Claude escribió los tests de las validaciones, los filtros, los componentes principales y la función de email, incluidos casos de error.
+- Revisé qué probaba cada test antes de darlos por buenos.
 
 ### Hito 9: Deploy y revisión final
 
