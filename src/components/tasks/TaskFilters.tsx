@@ -1,5 +1,4 @@
-import type { TaskCounts } from '../../types/task';
-import type { TaskFilter } from '../../types/task';
+import type { TaskCounts, TaskFilter } from '../../types/task';
 import styles from './TaskFilters.module.css';
 
 const FILTER_LABELS: Record<TaskFilter, string> = {
