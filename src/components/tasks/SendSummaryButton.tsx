@@ -4,6 +4,7 @@ import styles from './SendSummaryButton.module.css';
 
 interface SendSummaryButtonProps {
   status: AsyncStatus;
+  canRetry: boolean;
   disabled: boolean;
   onSend: () => void;
 }
@@ -21,7 +22,7 @@ function CheckIcon() {
   );
 }
 
-function getLabel(status: AsyncStatus) {
+function getLabel(status: AsyncStatus, canRetry: boolean) {
   if (status === 'success') {
     return (
       <>
@@ -31,7 +32,7 @@ function getLabel(status: AsyncStatus) {
     );
   }
 
-  if (status === 'error') return 'Reintentar';
+  if (status === 'error' && canRetry) return 'Reintentar';
 
   return (
     <>
@@ -41,7 +42,7 @@ function getLabel(status: AsyncStatus) {
   );
 }
 
-export function SendSummaryButton({ status, disabled, onSend }: SendSummaryButtonProps) {
+export function SendSummaryButton({ status, canRetry, disabled, onSend }: SendSummaryButtonProps) {
   return (
     <Button
       variant="secondary"
@@ -52,7 +53,7 @@ export function SendSummaryButton({ status, disabled, onSend }: SendSummaryButto
       isLoading={status === 'loading'}
       loadingText="Enviando…"
     >
-      {getLabel(status)}
+      {getLabel(status, canRetry)}
     </Button>
   );
 }

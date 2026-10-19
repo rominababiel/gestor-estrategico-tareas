@@ -45,6 +45,7 @@ export function TasksPage() {
             </h1>
             <SendSummaryButton
               status={summary.status}
+              canRetry={summary.canRetry}
               disabled={!isReady || counts.all === 0}
               onSend={summary.send}
             />

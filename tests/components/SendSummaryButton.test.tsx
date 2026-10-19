@@ -101,6 +101,8 @@ describe('Enviar resumen', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Por ahora el envío solo está habilitado para emails autorizados.',
     );
+    expect(screen.queryByRole('button', { name: 'Reintentar' })).not.toBeInTheDocument();
+    expect(getSummaryButton()).toBeEnabled();
   });
 
   it('asks to verify the email when the function rejects an unverified account', async () => {
