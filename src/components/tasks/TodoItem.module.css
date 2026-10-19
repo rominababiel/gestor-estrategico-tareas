@@ -30,6 +30,7 @@
   align-items: center;
   justify-content: center;
   height: var(--control-height-sm);
+  cursor: pointer;
 }
 
 .checkbox {
@@ -47,7 +48,7 @@
     box-shadow var(--transition);
 }
 
-.checkbox:hover:not(:disabled) {
+.check:hover .checkbox:not(:disabled) {
   border-color: var(--color-text);
   box-shadow: 0 0 0 9px var(--color-surface-muted);
 }
@@ -57,7 +58,7 @@
   border-color: var(--color-accent);
 }
 
-.checkbox:checked:hover:not(:disabled) {
+.check:hover .checkbox:checked:not(:disabled) {
   background-color: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
   box-shadow: 0 0 0 9px var(--color-focus-ring);

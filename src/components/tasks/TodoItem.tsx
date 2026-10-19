@@ -67,7 +67,7 @@ export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) 
 
   return (
     <li className={classNames}>
-      <div className={styles.check}>
+      <label className={styles.check}>
         <input
           type="checkbox"
           className={styles.checkbox}
@@ -91,7 +91,7 @@ export function TodoItem({ task, onToggle, onUpdate, onDelete }: TodoItemProps) 
             <Spinner size="md" />
           </span>
         )}
-      </div>
+      </label>
       <div className={styles.body}>
         <h3 className={styles.title}>{task.title}</h3>
         {task.description && <p className={styles.description}>{task.description}</p>}
