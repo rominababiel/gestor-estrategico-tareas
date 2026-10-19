@@ -1,4 +1,4 @@
-# Gestor de tareas
+# Gestor estratégico de tareas
 
 SPA de gestión de tareas con autenticación, persistencia por usuario en Cloud Firestore y envío de un resumen por email mediante AWS SES a través de una Vercel Function.
 
@@ -6,16 +6,32 @@ SPA de gestión de tareas con autenticación, persistencia por usuario en Cloud 
 
 https://gestor-estrategico-tareas-tan.vercel.app
 
-## Funcionalidades
+## Objetivo del proyecto
 
-- Registro e inicio de sesión con email y contraseña o con Google.
-- Verificación del email al registrarse y recuperación de contraseña.
-- Sesión persistente y rutas protegidas: `/tasks` solo es accesible con sesión iniciada.
-- Crear, editar, completar y eliminar tareas, con confirmación antes de eliminar.
-- Filtros por estado (todas, pendientes, completadas) y barra de progreso.
-- Sincronización en tiempo real entre pestañas y dispositivos.
-- Aviso cuando no hay conexión; los cambios se guardan al volver a conectarse.
-- Botón para recibir por email un resumen del estado de todas las tareas.
+**Gestor estratégico de tareas** es una aplicación web que MateCode, una startup que desarrolla aplicaciones para pequeñas empresas, construye para un cliente que necesita que sus empleados gestionen sus tareas diarias.
+
+### Problemática
+
+El cliente necesita que sus empleados gestionen sus tareas diarias de forma **organizada**, **persistente** (lo que se carga hoy sigue ahí mañana) y **accesible desde cualquier dispositivo**, ya sea la computadora de la oficina o el celular. Además, pide una solución rápida, escalable y apoyada en servicios administrados (BaaS), sin un servidor propio que mantener.
+
+### Solución
+
+Una SPA donde cada persona tiene su propia cuenta y sus propias tareas guardadas en la nube, sincronizadas en tiempo real entre dispositivos. Además, puede recibir por email un resumen del estado de sus tareas. Firebase resuelve la autenticación y la base de datos, una función serverless en Vercel envía los emails con AWS SES y la app está publicada con una URL pública.
+
+### Casos de uso principales
+
+1. **Registrarse e iniciar sesión** con email y contraseña o con Google, verificar el email y recuperar la contraseña si se olvida. La sesión se mantiene al recargar y `/tasks` solo es accesible con sesión iniciada.
+2. **Cargar las tareas del día** con un título y una descripción opcional.
+3. **Marcar como completadas** las tareas terminadas y ver el avance en la barra de progreso.
+4. **Filtrar** para ver solo las pendientes o solo las completadas.
+5. **Editar o eliminar** una tarea; antes de eliminar se pide confirmación.
+6. **Continuar en otro dispositivo:** las tareas aparecen al instante en el celular o en otra computadora.
+7. **Recibir un resumen por email** con el estado de todas las tareas.
+
+### Alcance
+
+- **Incluye:** cuentas individuales, gestión completa de tareas (crear, ver, editar, completar y eliminar), persistencia en la nube por usuario, sincronización en tiempo real, aviso sin conexión (los cambios se guardan al volver a conectarse), resumen por email y deploy público.
+- **No incluye:** compartir tareas entre usuarios, fechas de vencimiento, prioridades ni roles. Mientras AWS SES esté en modo de prueba, el resumen por email solo se envía a direcciones verificadas.
 
 ## Stack
 
@@ -47,7 +63,7 @@ La consigna sugiere `functions/` para las funciones serverless. Se usa `api/` po
 
 ## Decisiones de arquitectura
 
-- **Capas con responsabilidades separadas.** Las páginas componen componentes; los componentes reciben datos y callbacks; los hooks (`useAuth`, `useTasks`, `useSendSummary`) manejan el estado; `features/` contiene lógica pura (validaciones, filtros, mensajes de error) sin dependencias de React ni Firebase; y `services/` es la única capa que habla con Firebase o con la API. Así la lógica se testea sin red y cambiar un proveedor afecta un solo lugar.
+- **Capas con responsabilidades separadas.** Las páginas componen componentes; los componentes reciben datos y callbacks; los hooks (`useAuth`, `useTasks`, `useSendSummary`) manejan el estado; `features/` agrupa la lógica de cada dominio: el contexto de sesión en `auth` y funciones puras (validaciones, filtros, mensajes de error) en `tasks` y `email`, sin dependencias de React ni Firebase; y `services/` es la única capa que habla con Firebase o con la API. Así la lógica se testea sin red y cambiar un proveedor afecta un solo lugar.
 - **Estado de sesión con Context y un observador de Firebase.** `AuthProvider` se suscribe a los cambios de sesión de Firebase Auth y expone el usuario a toda la app. Mientras se resuelve la sesión inicial se muestra un loader, para evitar parpadeos o redirecciones incorrectas.
 - **Rutas protegidas como componentes.** `ProtectedRoute` redirige al login sin sesión y recuerda la ruta pedida; `PublicOnlyRoute` evita volver a login o registro con sesión iniciada.
 - **Tiempo real con `onSnapshot`.** `useTasks` se suscribe a las tareas del usuario y cancela la suscripción al desmontarse. La lista se actualiza sola en todas las pestañas sin recargar.
@@ -119,12 +135,12 @@ Se probó con dos usuarios reales (A y B) contra las reglas publicadas, usando l
 
 El botón **Enviar resumen** de Mis tareas manda al usuario un email con todas sus tareas, usando AWS SES desde una Vercel Function. Las credenciales de AWS y de Firebase Admin viven solo en el servidor.
 
-1. El frontend (`src/services/emailService.ts`) obtiene el ID token de Firebase del usuario logueado y hace `POST /api/send-summary` con el header `Authorization: Bearer <token>`. No envía tareas ni destinatario.
+1. El frontend (`src/services/emailService.ts`) obtiene el ID token de Firebase del usuario con sesión iniciada y hace `POST /api/send-summary` con el header `Authorization: Bearer <token>`. No envía tareas ni destinatario.
 2. La función (`api/send-summary.ts`) verifica el token con Firebase Admin SDK. Si falta o no es válido, responde `401`.
 3. Exige que el email del token esté verificado (`403` si no), para no enviar emails a direcciones que el usuario no demostró que son suyas.
 4. Lee las tareas del usuario desde Firestore con Admin SDK, filtrando por su `uid`. Si no tiene tareas, responde `400`.
 5. Arma el email en HTML y texto plano (`api/_lib/summaryEmail.ts`) y lo envía con SES al email del token.
-6. Responde `200` con `{ sentTo, taskCount }`. Si SES rechaza al destinatario por el modo sandbox responde `403`, si SES falla por otro motivo `502` y, ante cualquier otro error, `500`, siempre sin exponer detalles internos.
+6. Responde `200` con `{ sentTo, taskCount }`. Si SES rechaza al destinatario por el modo sandbox responde `403`, si SES falla por otro motivo `502` y, ante cualquier otro error, `500`, siempre sin exponer detalles internos. Cualquier método que no sea `POST` recibe `405`.
 
 El frontend traduce cada código de error a un mensaje en español y muestra el resultado debajo de la barra de progreso. Mientras se envía, el botón muestra "Enviando…" y queda deshabilitado; también está deshabilitado si no hay tareas.
 
@@ -142,7 +158,7 @@ npx vercel dev --local-config vercel.dev.json
 
 ### Modo sandbox de SES
 
-La cuenta de SES está en modo sandbox: solo envía emails a direcciones verificadas en SES. Si el usuario logueado tiene un email que no está verificado en SES, la función responde `403` y la app muestra "Por ahora el envío solo está habilitado para emails autorizados.".
+La cuenta de SES está en modo sandbox: solo envía emails a direcciones verificadas en SES. Si el usuario con sesión iniciada tiene un email que no está verificado en SES, la función responde `403` y la app muestra el mensaje "Por ahora el envío solo está habilitado para emails autorizados."
 
 Para habilitar un destinatario:
 
@@ -178,7 +194,7 @@ Las variables de SES no usan el prefijo `AWS_` porque Vercel reserva esos nombre
 
 ## Instalación local
 
-Requisitos: Node.js 20 o superior.
+Requisitos: Node.js 20.19 o superior, o 22.12 o superior (lo que exige Vite 8).
 
 ```bash
 npm install
@@ -197,6 +213,7 @@ Completar `.env` con las credenciales correspondientes (ver [Variables de entorn
 | `npm run preview`      | Previsualiza el build                                    |
 | `npm run lint`         | Linter (ESLint)                                          |
 | `npm run format`       | Formatea el código con Prettier                          |
+| `npm run format:check` | Verifica el formato sin modificar archivos               |
 | `npm run typecheck`    | Chequeo de tipos                                         |
 | `npm run test`         | Ejecuta los tests                                        |
 | `npm run test:watch`   | Tests en modo watch                                      |
@@ -228,8 +245,8 @@ Si se cambia una variable `VITE_*`, hay que volver a desplegar, porque su valor 
 
 Desarrollé el proyecto con Claude Code como asistente: Claude escribió el código y yo lo guié, decidí y probé cada etapa en el navegador.
 
-- **Cómo lo integré:** primero le pedí que leyera la consigna, la guía y la rúbrica y armara un plan por etapas, separando lo que pide la documentación de lo que proponía por su cuenta. Cada decisión que la documentación no definía me la consultó, y al terminar cada etapa probé la app y le marqué lo que no funcionaba o no me gustaba.
-- **Dónde fue más efectiva:** para entender la documentación, para explicarme errores que no habría resuelto sola (como la contraseña que se perdía al entrar con Google) y para configurar Firebase, AWS y Vercel paso a paso.
-- **Buenas prácticas que descubrí:** pedir el plan antes que el código, preguntar siempre qué dice la documentación antes de elegir, pedir explicaciones en palabras simples para poder defender cada decisión, probar la app yo misma y no pegar nunca claves en el chat.
+- **Cómo lo integré:** primero leí la consigna, la guía y la rúbrica, se las pasé como contexto y le pedí un plan por etapas, separando lo que pide la documentación de lo que proponía por su cuenta. Cada decisión que la documentación no definía me la consultó, y al terminar cada etapa probé la app y le avisé lo que no funcionaba o no me gustaba.
+- **Dónde fue más efectiva:** para confirmar que había entendido bien la documentación, para explicarme errores que no habría resuelto sola (como la contraseña que se perdía al entrar con Google) y para configurar Firebase, AWS y Vercel paso a paso.
+- **Buenas prácticas que descubrí:** leer la documentación yo primero y usar la IA para contrastarla, pedir el plan antes que el código, pedir explicaciones en palabras simples para poder defender cada decisión, probar la app yo misma y no pegar nunca claves en el chat.
 
 El detalle completo, con los prompts principales y las decisiones de cada etapa, está en [docs/AI_USAGE.md](docs/AI_USAGE.md).
