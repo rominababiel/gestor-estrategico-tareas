@@ -34,7 +34,7 @@ Estos son los prompts más importantes que usé durante el desarrollo.
 - _Cómo influyó:_ Claude escribió las reglas de seguridad de Firestore (las reglas que decide quién puede leer o modificar cada dato) para que cada usuario solo acceda a sus propias tareas. Las probó con dos usuarios de prueba: el segundo no pudo ver, editar ni borrar las tareas del primero.
 - _Qué decidí:_ sumar esa prueba al repositorio (`npm run verify:rules`) para poder repetirla cuando quiera.
 
-**5. "Me registré con email y contraseña y después entré con Google con el mismo email. Ahora, cuando intento entrar con email y contraseña, no me deja, y la contraseña es la que creé; solo puedo entrar con Google. Además no hay forma de recuperar la contraseña, y eso en un login no está bien. ¿Por qué pasa y qué podemos hacer?"**
+**5. "Me registré con email y contraseña y después entré con Google con el mismo email. Ahora, cuando intento entrar con email y contraseña, me aparece 'El email o la contraseña son incorrectos.', pero la contraseña es la que creé; solo puedo entrar con Google. Además no hay forma de recuperar la contraseña, y eso en un login no está bien. ¿Por qué pasa y qué podemos hacer?"**
 
 - _Cómo influyó:_ Claude me explicó que Firebase borra la contraseña si el email no fue verificado y después se entra con Google, porque registrarse con contraseña no prueba que el email sea de uno.
 - _Qué decidí:_ aunque la consigna no lo pide, agregué la verificación del email al registrarse y la recuperación de contraseña, porque un login sin recuperación me parece incompleto.
