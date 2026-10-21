@@ -138,6 +138,7 @@ Estos son los prompts más importantes que usé durante el desarrollo.
 - Después las tareas no cargaban en producción. Claude descubrió que una de las variables cargadas en Vercel tenía un error de tipeo (le faltaba una letra) y la corrigió.
 - El email llegaba a spam. Claude me explicó que pasa porque sale desde servidores de Amazon con una dirección de Gmail; lo marqué como "No es spam" y pedí que quedara aclarado en el README.
 - Probé todo en producción: login, crear y completar tareas y recibir el resumen.
+- Grabé un video con el flujo completo en producción: https://drive.google.com/file/d/11IG8E5ORGoydLgVRLg5eq-hm1Kd-s0Mg/view
 
 ## En qué situaciones fue más efectiva
 

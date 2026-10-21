@@ -6,6 +6,8 @@ SPA de gestión de tareas con autenticación, persistencia por usuario en Cloud 
 
 https://gestor-estrategico-tareas-tan.vercel.app
 
+Video del flujo completo en producción: https://drive.google.com/file/d/11IG8E5ORGoydLgVRLg5eq-hm1Kd-s0Mg/view
+
 ## Objetivo del proyecto
 
 **Gestor estratégico de tareas** es una aplicación web que MateCode, una startup que desarrolla aplicaciones para pequeñas empresas, construye para un cliente que necesita que sus empleados gestionen sus tareas diarias.
